@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  try to take over the world!
-// @author       You
+// @author       https://vozhzhaev.ru
 // @match        https://www.google.com/*
 // @match        https://xn----7sbab5aqcbiddtdj1e1g.xn--p1ai/*
 // @match        https://crushdrummers.ru/*
@@ -33,7 +33,7 @@ if (location.host == "www.google.com"){
 else {
     if (getRandom(0,100)>20){
         let index = getRandom(0,links.length);
-        if(links[index].href.indexOf(site)!=-1)
+        if(links[index].href.indexOf(site)!=-1 && links[index].href.indexOf('#')==-1 && links[index].href.indexOf('.jpg')==-1)
             setTimeout(()=>{links[index].click();},getRandom(3000, 10000));
         else location.href = `https://${site}/`;
     }
@@ -47,12 +47,14 @@ function getRandom(min,max){
 function writeWord(keyword){
   let i = 0;
   let timerId = setInterval(()=>{
-    document.getElementsByName('q')[0].value += keyword[i];
-    i++;
-    if (i==keyword.length) {
+    setTimeout(()=>{
+        document.getElementsByName('q')[0].value += keyword[i]==undefined?'':keyword[i];
+        i++;
+        if (i==keyword.length) {
         clearInterval(timerId);
         btnK.click();
     }
+    },getRandom(0,1000));
   },300);
 }
 
